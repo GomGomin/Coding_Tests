@@ -1,14 +1,7 @@
 class Solution {
     public long solution(long n) {
-        long answer = -1;
-        int i = 1;
-        while(i<=n){
-            if((long)Math.pow(i,2) == n){
-                answer = (long)Math.pow(i+1,2); 
-                break;
-            }
-            i++;
-        }
-        return answer;
+        long answer = 0;
+        double x = Math.sqrt(n);
+        return Math.floor(x) == x ? (long)Math.pow(x+1,2) : -1;
     }
 }
