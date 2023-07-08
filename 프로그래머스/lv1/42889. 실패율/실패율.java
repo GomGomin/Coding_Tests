@@ -1,35 +1,51 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 class Solution {
-    public int[] solution(int N, int[] stages) {
+    public int[] solution(int N, int[] lastStages) {
+        int nPlayers = lastStages.length;
+        int[] nStagePlayers = new int[N + 2];
+        for (int stage : lastStages) {
+            nStagePlayers[stage] += 1;
+        }
+
+        int remainingPlayers = nPlayers;
+        List<Stage> stages = new ArrayList<>();
+        for (int id = 1 ; id <= N; id++) {
+            double failure = (double) nStagePlayers[id] / remainingPlayers;
+            remainingPlayers -= nStagePlayers[id];
+
+            Stage s = new Stage(id, failure);
+            stages.add(s);
+        }
+        Collections.sort(stages, Collections.reverseOrder());
+
         int[] answer = new int[N];
-        int[] fail = new int[N];
-        
-        for(int i = 0; i<stages.length; i++){
-            if(stages[i] > N){
-                continue;
-            }
-            fail[stages[i]-1]++;
+        for (int i = 0; i < N; i++) {
+            answer[i] = stages.get(i).id;
         }
-        
-        ArrayList<Double> list = new ArrayList<>();
-        
-        int length = stages.length;
-        
-        for(int i = 0; i<fail.length; i++){
-            if(length == 0){
-                list.add((double)0);
-            }else{
-            list.add((double) fail[i] / length);
-            length -=fail[i];
-            }
-        }
-        
-        for(int i = 0; i<answer.length; i++){
-            answer[i] = list.indexOf(Collections.max(list))+1;
-            list.set(list.indexOf(Collections.max(list)),(double)-1);
-        }
-        
         return answer;
+    }
+
+    class Stage implements Comparable<Stage> {
+        public int id;
+        public double failure;
+
+        public Stage(int id_, double failure_) {
+            id = id_;
+            failure = failure_;
+        }
+
+        @Override
+        public int compareTo(Stage o) {
+            if (failure < o.failure ) {
+                return -1;
+            }
+            if (failure > o.failure ) {
+                return 1;
+            }
+            return 0;
+        }
     }
 }
