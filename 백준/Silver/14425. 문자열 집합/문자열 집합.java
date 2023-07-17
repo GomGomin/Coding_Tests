@@ -16,14 +16,14 @@ public class Main {
         int n = Integer.parseInt(st.nextToken());
         int m = Integer.parseInt(st.nextToken());
         
-        ArrayList<String> list = new ArrayList<>();
+        HashMap<String, Integer> list = new HashMap<String, Integer>();
                 
     	for(int i=0; i<n; i++) {
-    		list.add(br.readLine());
+    		list.put(br.readLine(), 1);
     	}
         
     	for(int i=0; i<m; i++) {
-    		if(list.contains(br.readLine())) {
+    		if(list.containsKey(br.readLine())) {
     			answer++;
     		}
     	}
